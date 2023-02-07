@@ -1,12 +1,16 @@
 using Chessmate.Core.Interfaces;
 using Chessmate.Infrastructure;
 using Chessmate.Infrastructure.Identity;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("IdentityConnection");
 builder.Services.AddDbContext(connectionString);
+
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>();
 
 builder.Services.AddScoped<IRegisterUserService, RegisterIdentityUserService>();
 

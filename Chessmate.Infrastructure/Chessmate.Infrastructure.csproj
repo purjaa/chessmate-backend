@@ -15,4 +15,8 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Chessmate.Core\Chessmate.Core.csproj" />
+  </ItemGroup>
+
 </Project>

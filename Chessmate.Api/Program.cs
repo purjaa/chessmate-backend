@@ -1,11 +1,14 @@
+using Chessmate.Core.Interfaces;
 using Chessmate.Infrastructure;
-
+using Chessmate.Infrastructure.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("IdentityConnection");
 builder.Services.AddDbContext(connectionString);
+
+builder.Services.AddScoped<IRegisterUserService, RegisterIdentityUserService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

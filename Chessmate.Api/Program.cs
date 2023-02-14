@@ -9,6 +9,18 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var corsAllowLocalhostReact = "CorsAllowLocalhostReact";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: corsAllowLocalhostReact, policy =>
+    {
+        policy.AllowAnyHeader()
+            .AllowAnyMethod()
+            .WithOrigins("http://localhost:5173")
+            .AllowCredentials();
+    });
+});
+
 // Add services to the container.
 string connectionString = builder.Configuration.GetConnectionString("IdentityConnection");
 builder.Services.AddDbContext(connectionString);
@@ -87,6 +99,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(corsAllowLocalhostReact);
 
 app.UseAuthentication();
 

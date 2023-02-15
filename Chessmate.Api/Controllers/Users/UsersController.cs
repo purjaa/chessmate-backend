@@ -30,7 +30,14 @@ public class UsersController : BaseController
             return BadRequest("Insufficient parameters");
         }
 
-        var response = await _registerUserService.RegisterUserAsync(request.Username, request.Email, request.Password);
+        var result = await _registerUserService.RegisterUserAsync(request.Username, request.Email, request.Password);
+
+        var response = new AuthenticateUserResponse
+        {
+            Result = result.Succeeded,
+            Username = request.Username
+        };
+
         return Ok(response);
     }
 
@@ -43,11 +50,12 @@ public class UsersController : BaseController
             return BadRequest("Insufficient parameters");
         }
 
-        var response = new AuthenticateUserResponse();
         var result = await _signInManager.PasswordSignInAsync(request.Username, request.Password, false, false);
 
-        response.Result = result.Succeeded;
-        response.Username = request.Username;
+        var response = new AuthenticateUserResponse {
+            Result = result.Succeeded,
+            Username = request.Username
+        };
 
         if (result.Succeeded)
         {

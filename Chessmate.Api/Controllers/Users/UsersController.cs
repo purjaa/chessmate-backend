@@ -11,14 +11,17 @@ public class UsersController : BaseController
     private readonly IRegisterUserService _registerUserService;
     private readonly SignInManager<ApplicationUser> _signInManager;
     private readonly ITokenClaimsService _tokenClaimsService;
+    private readonly IUserStateService _userStateService;
 
     public UsersController(IRegisterUserService registerUserService,
         SignInManager<ApplicationUser> signInManager,
-        ITokenClaimsService tokenClaimsService)
+        ITokenClaimsService tokenClaimsService,
+        IUserStateService userStateService)
     {
         _registerUserService = registerUserService;
         _signInManager = signInManager;
         _tokenClaimsService = tokenClaimsService;
+        _userStateService = userStateService;
     }
 
     // POST: api/Users/register
@@ -31,6 +34,11 @@ public class UsersController : BaseController
         }
 
         var result = await _registerUserService.RegisterUserAsync(request.Username, request.Email, request.Password);
+
+        if (result.Succeeded)
+        {
+            await _userStateService.CreateUserStateAsync(request.Username);
+        }
 
         var response = new AuthenticateUserResponse
         {

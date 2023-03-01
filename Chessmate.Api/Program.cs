@@ -1,5 +1,7 @@
 using Chessmate.Core.Interfaces;
+using Chessmate.Core.Services;
 using Chessmate.Infrastructure;
+using Chessmate.Infrastructure.Data;
 using Chessmate.Infrastructure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -50,6 +52,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddScoped<IRegisterUserService, RegisterIdentityUserService>();
 builder.Services.AddScoped<ITokenClaimsService, IdentityTokenClaimService>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
+builder.Services.AddScoped<IUserStateService, UserStateService>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

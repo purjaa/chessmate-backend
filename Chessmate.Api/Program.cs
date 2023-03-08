@@ -93,6 +93,8 @@ builder.Services.AddSwaggerGen(c =>
     });
 });
 
+builder.Services.AddSignalR();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -106,10 +108,18 @@ app.UseHttpsRedirection();
 
 app.UseCors(corsAllowLocalhostReact);
 
+app.UseRouting();
+
 app.UseAuthentication();
 
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapHub<LobbyHub>("api/hubs/lobby");
+});
 
 app.Run();

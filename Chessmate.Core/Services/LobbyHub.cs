@@ -1,5 +1,6 @@
 ﻿using Chessmate.Core.Entities;
 using Chessmate.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 namespace Chessmate.Core.Services;
@@ -13,6 +14,14 @@ public class LobbyHub : Hub<ILobbyHubClient>, ILobbyHub
         _userStateService = userStateService;
     }
 
+    [Authorize]
+    public override Task OnConnectedAsync()
+    {
+        //string username = Context.User.Identity.Name;
+        return base.OnConnectedAsync();
+    }
+
+    [Authorize]
     public async Task SendUserOnlineMessage(UserOnlineMessage message)
     {
         await _userStateService.SetUserOnlineAsync(message.Username);

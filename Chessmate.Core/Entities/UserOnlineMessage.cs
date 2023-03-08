@@ -3,11 +3,9 @@
 public class UserOnlineMessage
 {
     public string Username { get; set; }
-    public string ConnectionId { get; set; }
 
-    public UserOnlineMessage(string username, string connectionId)
+    public UserOnlineMessage(string username)
     {
         Username = username;
-        ConnectionId = connectionId;
     }
 }

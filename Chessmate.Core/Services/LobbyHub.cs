@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace Chessmate.Core.Services;
 
+[Authorize]
 public class LobbyHub : Hub<ILobbyHubClient>, ILobbyHub
 {
     private readonly IUserStateService _userStateService;
@@ -14,14 +15,26 @@ public class LobbyHub : Hub<ILobbyHubClient>, ILobbyHub
         _userStateService = userStateService;
     }
 
-    [Authorize]
-    public override Task OnConnectedAsync()
+    public override async Task OnDisconnectedAsync(Exception? exception)
     {
-        //string username = Context.User.Identity.Name;
-        return base.OnConnectedAsync();
+        try
+        {
+            string username = Context.User.Identity.Name;
+            await _userStateService.SetUserOfflineAsync(username);
+
+            var onlineUsers = await _userStateService.GetOnlineUsers();
+
+            var allOnlineUsersMessage = new AllOnlineUsersMessage(onlineUsers);
+            await Clients.All.ReceiveAllOnlineUsersMessage(allOnlineUsersMessage);
+        }
+        catch(Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+
+        await base.OnDisconnectedAsync(exception);
     }
 
-    [Authorize]
     public async Task SendUserOnlineMessage(UserOnlineMessage message)
     {
         await _userStateService.SetUserOnlineAsync(message.Username);

@@ -3,6 +3,7 @@ using Chessmate.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chessmate.Infrastructure.Data.Migrations
 {
     [DbContext(typeof(UserStateContext))]
-    partial class UserStateContextModelSnapshot : ModelSnapshot
+    [Migration("20230314164540_ChangeIsOccupiedToIsAvailable")]
+    partial class ChangeIsOccupiedToIsAvailable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

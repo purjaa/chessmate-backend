@@ -29,6 +29,7 @@ public class UserStateService : IUserStateService
         Guard.Against.Null(userState, nameof(userState));
 
         userState.IsOnline = true;
+        userState.IsAvailable = true;
         await _userStateRepository.UpdateAsync(userState);
     }
 
@@ -40,6 +41,7 @@ public class UserStateService : IUserStateService
         Guard.Against.Null(userState, nameof(userState));
 
         userState.IsOnline = false;
+        userState.IsAvailable = false;
         await _userStateRepository.UpdateAsync(userState);
     }
 

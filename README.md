@@ -16,7 +16,7 @@ Update-Database -Context UserStateContext
 ```
 to create the database tables according to the migrations created in the project. After this everything should be set and the backend can be started from Visual Studio.
 
-## Current features:
+## Current features
 - user registration and logging in, using JSON Web Token based authentication 
 - base for SignalR communication (LobbyService which can be used to track online / offline users)
 
